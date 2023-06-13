@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "762415072889",
+    "firebase_url": "https://quizly-154d6-default-rtdb.firebaseio.com",
+    "project_id": "quizly-154d6",
+    "storage_bucket": "quizly-154d6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:762415072889:android:f77a33ae9e5a28b28b36a8",
+        "android_client_info": {
+          "package_name": "com.application.quizly"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "762415072889-gng0h8d44brqgjgskcqvel913lciudfg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.application.quizly",
+            "certificate_hash": "1b3e17ee138b3bc43751569db0558a19b949e9e2"
+          }
+        },
+        {
+          "client_id": "762415072889-pojlunbf4mh0pjljhq4qr21rabsbu5bg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD49vkxxfbBtTH0Br8e665mpdk-eSRrnu0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "762415072889-pojlunbf4mh0pjljhq4qr21rabsbu5bg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
