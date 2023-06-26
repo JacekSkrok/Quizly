@@ -1,6 +1,7 @@
 package com.application.quizly;
 
 import android.app.Activity;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -23,23 +24,30 @@ public class FirebaseUtil {
     public static void openFbReference(String ref, Activity callerActivity) {
         if( firebaseUtil == null ) {
             mFirebaseAuth = FirebaseAuth.getInstance();
+            caller = callerActivity;
             mAuthListener = new FirebaseAuth.AuthStateListener() {
                 @Override
                 public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                    List<AuthUI.IdpConfig> providers = Arrays.asList(
-                            new AuthUI.IdpConfig.EmailBuilder().build(),
-                            new AuthUI.IdpConfig.GoogleBuilder().build());
-
-                    caller = callerActivity;
-
-                    caller.startActivityForResult(
-                            AuthUI.getInstance()
-                                .createSignInIntentBuilder()
-                                .setAvailableProviders(providers)
-                                .build(), RC_SIGN_IN);
+                    if( firebaseAuth.getCurrentUser() == null) {
+                        FirebaseUtil.signIn();
+                    }
+                        Toast.makeText(callerActivity.getBaseContext(), "Welcome back", Toast.LENGTH_SHORT).show();
                 }
             };
         }
+    }
+
+    private static void signIn() {
+            List<AuthUI.IdpConfig> providers = Arrays.asList(
+                    new AuthUI.IdpConfig.EmailBuilder().build(),
+                    new AuthUI.IdpConfig.GoogleBuilder().build());
+
+            caller.startActivityForResult(
+                    AuthUI.getInstance()
+                            .createSignInIntentBuilder()
+                            .setAvailableProviders(providers)
+                            .build(), RC_SIGN_IN);
+
     }
 
     public static void attachListener() {
