@@ -19,7 +19,7 @@
             android:label="@string/title_activity_register"
             android:theme="@style/Theme.Quizly" />
         <activity
-            android:name=".MainActivity"
+            android:name=".InsertQuizActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

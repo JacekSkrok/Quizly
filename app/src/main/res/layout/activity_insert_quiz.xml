@@ -7,14 +7,41 @@
     tools:context=".InsertQuizActivity">
 
     <EditText
-        android:id="@+id/editTextText"
-        android:layout_width="wrap_content"
+        android:id="@+id/txtTitle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text"
-        android:text="Name"
+        android:layout_marginEnd="@dimen/txt_margin_standard"
+        android:layout_marginStart="@dimen/txt_margin_standard"
+        android:layout_marginTop="@dimen/txt_margin_large"
+        android:hint="@string/quiz_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingClass" />
+
+    <EditText
+        android:id="@+id/txtCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/txt_margin_standard"
+        android:layout_marginStart="@dimen/txt_margin_standard"
+        android:layout_marginTop="@dimen/txt_margin_large"
+        android:hint="@string/category_hint"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtTitle" />
+
+    <EditText
+        android:id="@+id/txtDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/txt_margin_standard"
+        android:layout_marginStart="@dimen/txt_margin_standard"
+        android:layout_marginTop="@dimen/txt_margin_large"
+        android:hint="@string/description_hint"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCategory" />
 </androidx.constraintlayout.widget.ConstraintLayout>
