@@ -2,12 +2,16 @@ package com.application.quizly;
 
 public class Quiz {
     private String id;
+
+    private String title;
     private String category;
     private String description;
     private String imageUrl;
 
-    public Quiz(String id, String category, String description, String imageUrl) {
-        this.setId(id);
+    public Quiz() {}
+
+    public Quiz(String title,String category, String description, String imageUrl) {
+        this.setTitle(title);
         this.setCategory(category);
         this.setDescription(description);
         this.setImageUrl(imageUrl);
@@ -19,6 +23,13 @@ public class Quiz {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getCategory() {
@@ -44,4 +55,5 @@ public class Quiz {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
 }
