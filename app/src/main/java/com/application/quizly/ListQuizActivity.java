@@ -27,8 +27,10 @@ public class ListQuizActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_quiz);
 
-        aFirebaseDatabase = FirebaseDatabase.getInstance();
-        aDatabaseReference = aFirebaseDatabase.getReference().child("quizgames");
+        FirebaseUtil.openFbReference("quizgames", this);
+
+        aFirebaseDatabase = FirebaseUtil.aFirebaseDatabase;
+        aDatabaseReference = FirebaseUtil.aDatabaseReference;
         aChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -59,5 +61,17 @@ public class ListQuizActivity extends AppCompatActivity {
             }
         };
         aDatabaseReference.addChildEventListener(aChildEventListener);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        FirebaseUtil.detachListener();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        FirebaseUtil.attachListener();
     }
 }

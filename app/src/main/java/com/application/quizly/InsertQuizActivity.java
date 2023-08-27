@@ -27,8 +27,10 @@ public class InsertQuizActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert_quiz);
 
-        aFirebaseDatabase = FirebaseDatabase.getInstance();
-        aDatabaseReference = aFirebaseDatabase.getReference().child("quizgames");
+        FirebaseUtil.openFbReference("quizgames", this);
+
+        aFirebaseDatabase = FirebaseUtil.aFirebaseDatabase;
+        aDatabaseReference = FirebaseUtil.aDatabaseReference;
 
         txtTitle = findViewById(R.id.txtTitle);
         txtCategory = findViewById(R.id.txtCategory);

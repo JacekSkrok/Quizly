@@ -7,25 +7,34 @@ import androidx.annotation.NonNull;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class FirebaseUtil {
     private static FirebaseUtil firebaseUtil;
-    public static FirebaseAuth mFirebaseAuth;
-    public static FirebaseAuth.AuthStateListener mAuthListener;
+    public static FirebaseDatabase aFirebaseDatabase;
+    public static DatabaseReference aDatabaseReference;
+    public static FirebaseAuth aFirebaseAuth;
+    public static FirebaseAuth.AuthStateListener aAuthListener;
+
+    public static ArrayList<Quiz> aQuizes;
 
     private static final int RC_SIGN_IN = 123;
     private static Activity caller;
 
     private FirebaseUtil() {};
 
-    public static void openFbReference(String ref, Activity callerActivity) {
+    public static void openFbReference(String ref, final Activity callerActivity) {
         if( firebaseUtil == null ) {
-            mFirebaseAuth = FirebaseAuth.getInstance();
+            firebaseUtil = new FirebaseUtil();
+            aFirebaseDatabase = FirebaseDatabase.getInstance();
+            aFirebaseAuth = FirebaseAuth.getInstance();
             caller = callerActivity;
-            mAuthListener = new FirebaseAuth.AuthStateListener() {
+            aAuthListener = new FirebaseAuth.AuthStateListener() {
                 @Override
                 public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                     if( firebaseAuth.getCurrentUser() == null) {
@@ -35,6 +44,8 @@ public class FirebaseUtil {
                 }
             };
         }
+        aQuizes = new ArrayList<Quiz>();
+        aDatabaseReference = aFirebaseDatabase.getReference().child(ref);
     }
 
     private static void signIn() {
@@ -51,10 +62,10 @@ public class FirebaseUtil {
     }
 
     public static void attachListener() {
-        mFirebaseAuth.addAuthStateListener(mAuthListener);
+        aFirebaseAuth.addAuthStateListener(aAuthListener);
     }
 
     public static void detachListener() {
-        mFirebaseAuth.removeAuthStateListener(mAuthListener);
+        aFirebaseAuth.removeAuthStateListener(aAuthListener);
     }
 }
