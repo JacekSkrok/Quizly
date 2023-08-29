@@ -1,66 +1,47 @@
 package com.application.quizly;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.ArrayList;
 
 public class ListQuizActivity extends AppCompatActivity {
-
-    ArrayList<Quiz> quizzes;
-    private FirebaseDatabase aFirebaseDatabase;
-    private DatabaseReference aDatabaseReference;
-    private ChildEventListener aChildEventListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_quiz);
-
         FirebaseUtil.openFbReference("quizgames", this);
+        RecyclerView rvQuizzes = findViewById(R.id.rvQuizes);
+        final QuizAdapter adapter = new QuizAdapter();
+        rvQuizzes.setAdapter(adapter);
+        LinearLayoutManager quizzesLayoutManager =
+                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rvQuizzes.setLayoutManager(quizzesLayoutManager);
+    }
 
-        aFirebaseDatabase = FirebaseUtil.aFirebaseDatabase;
-        aDatabaseReference = FirebaseUtil.aDatabaseReference;
-        aChildEventListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                TextView tvQuizes = findViewById(R.id.tvQuizes);
-                Quiz quiz = snapshot.getValue(Quiz.class);
-                tvQuizes.setText(tvQuizes.getText() + " \n " + quiz.getCategory());
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.list_activity_menu, menu);
+        return true;
+    }
 
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        };
-        aDatabaseReference.addChildEventListener(aChildEventListener);
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.insert_menu:
+                Intent intent = new Intent(this, InsertQuizActivity.class);
+                startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

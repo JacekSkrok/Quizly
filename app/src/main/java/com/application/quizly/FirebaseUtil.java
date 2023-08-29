@@ -15,18 +15,17 @@ import java.util.Arrays;
 import java.util.List;
 
 public class FirebaseUtil {
-    private static FirebaseUtil firebaseUtil;
     public static FirebaseDatabase aFirebaseDatabase;
     public static DatabaseReference aDatabaseReference;
+    private static FirebaseUtil firebaseUtil;
     public static FirebaseAuth aFirebaseAuth;
     public static FirebaseAuth.AuthStateListener aAuthListener;
-
     public static ArrayList<Quiz> aQuizes;
 
     private static final int RC_SIGN_IN = 123;
     private static Activity caller;
 
-    private FirebaseUtil() {};
+    private FirebaseUtil() {}
 
     public static void openFbReference(String ref, final Activity callerActivity) {
         if( firebaseUtil == null ) {
@@ -68,4 +67,5 @@ public class FirebaseUtil {
     public static void detachListener() {
         aFirebaseAuth.removeAuthStateListener(aAuthListener);
     }
+
 }
