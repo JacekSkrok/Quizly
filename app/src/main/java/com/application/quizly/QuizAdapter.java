@@ -2,6 +2,7 @@ package com.application.quizly;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,7 +84,7 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.DealViewHolder
         return quizzes.size();
     }
 
-    public class DealViewHolder extends RecyclerView.ViewHolder {
+    public class DealViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView tvTitle;
         TextView tvCategory;
         TextView tvDescription;
@@ -92,12 +93,24 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.DealViewHolder
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvCategory = itemView.findViewById(R.id.tvCategory);
             tvDescription = itemView.findViewById(R.id.tvDescription);
+            itemView.setOnClickListener(this);
         }
 
         public void bind(Quiz quiz) {
             tvTitle.setText(quiz.getTitle());
             tvCategory.setText(quiz.getCategory());
             tvDescription.setText(quiz.getDescription());
+        }
+
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+            Log.d("Click", String.valueOf(position));
+            Quiz selectedQuiz = quizzes.get(position);
+            Intent intent = new Intent(view.getContext(), QuizActivity.class);
+            intent.putExtra("Quiz", selectedQuiz);
+            view.getContext().startActivity(intent);
+
         }
     }
 }

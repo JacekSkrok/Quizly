@@ -1,5 +1,6 @@
 package com.application.quizly;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class InsertQuizActivity extends AppCompatActivity {
+public class QuizActivity extends AppCompatActivity {
 
     private FirebaseDatabase aFirebaseDatabase;
     private DatabaseReference aDatabaseReference;
@@ -21,6 +22,8 @@ public class InsertQuizActivity extends AppCompatActivity {
     EditText txtTitle;
     EditText txtCategory;
     EditText txtDescription;
+
+    Quiz quiz;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,17 @@ public class InsertQuizActivity extends AppCompatActivity {
         txtTitle = findViewById(R.id.txtTitle);
         txtCategory = findViewById(R.id.txtCategory);
         txtDescription = findViewById(R.id.txtDescription);
+
+        Intent intent = getIntent();
+        Quiz quiz = (Quiz) intent.getSerializableExtra("Quiz");
+        if (quiz == null) {
+            quiz = new Quiz();
+        }
+        this.quiz = quiz;
+        txtTitle.setText(quiz.getTitle());
+        txtCategory.setText(quiz.getCategory());
+        txtDescription.setText(quiz.getDescription());
+
     }
 
     @Override
@@ -45,6 +59,12 @@ public class InsertQuizActivity extends AppCompatActivity {
                 Toast.makeText(this, "Quiz was saved",Toast.LENGTH_LONG).show();
                 clean();
                 return true;
+            case R.id.delete_menu:
+                deleteQuiz();
+                Toast.makeText(this, "Quiz was deleted", Toast.LENGTH_LONG).show();
+                clean();
+                backToList();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -52,11 +72,27 @@ public class InsertQuizActivity extends AppCompatActivity {
     }
 
     private void saveQuiz() {
-        String title = txtTitle.getText().toString();
-        String category = txtCategory.getText().toString();
-        String description = txtDescription.getText().toString();
-        Quiz quiz = new Quiz(title, category, description, "");
-        aDatabaseReference.push().setValue(quiz);
+        quiz.setTitle(txtTitle.getText().toString());
+        quiz.setCategory(txtCategory.getText().toString());
+        quiz.setDescription(txtDescription.getText().toString());
+        if(quiz.getId() == null) {
+            aDatabaseReference.push().setValue(quiz);
+        }
+        else {
+            aDatabaseReference.child(quiz.getId()).setValue(quiz);
+        }
+    }
+
+    private void deleteQuiz() {
+        if (quiz == null) {
+            Toast.makeText(this, "Please save the quiz first", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        aDatabaseReference.child(quiz.getId()).removeValue();
+    }
+    private void backToList() {
+        Intent intent = new Intent(this, ListQuizActivity.class);
+        startActivity(intent);
     }
 
     private void clean() {

@@ -1,6 +1,8 @@
 package com.application.quizly;
 
-public class Quiz {
+import java.io.Serializable;
+
+public class Quiz implements Serializable {
     private String id;
 
     private String title;

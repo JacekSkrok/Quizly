@@ -38,7 +38,7 @@ public class ListQuizActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.insert_menu:
-                Intent intent = new Intent(this, InsertQuizActivity.class);
+                Intent intent = new Intent(this, QuizActivity.class);
                 startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
