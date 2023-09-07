@@ -18,13 +18,7 @@ public class ListQuizActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_quiz);
-        FirebaseUtil.openFbReference("quizgames", this);
-        RecyclerView rvQuizzes = findViewById(R.id.rvQuizes);
-        final QuizAdapter adapter = new QuizAdapter();
-        rvQuizzes.setAdapter(adapter);
-        LinearLayoutManager quizzesLayoutManager =
-                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        rvQuizzes.setLayoutManager(quizzesLayoutManager);
+
     }
 
     @Override
@@ -53,6 +47,13 @@ public class ListQuizActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        FirebaseUtil.openFbReference("quizgames", this);
+        RecyclerView rvQuizzes = findViewById(R.id.rvQuizes);
+        final QuizAdapter adapter = new QuizAdapter();
+        rvQuizzes.setAdapter(adapter);
+        LinearLayoutManager quizzesLayoutManager =
+                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rvQuizzes.setLayoutManager(quizzesLayoutManager);
         FirebaseUtil.attachListener();
     }
 }
