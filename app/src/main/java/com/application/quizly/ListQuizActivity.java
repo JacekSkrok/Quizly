@@ -7,9 +7,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 
 public class ListQuizActivity extends AppCompatActivity {
@@ -34,6 +39,17 @@ public class ListQuizActivity extends AppCompatActivity {
             case R.id.insert_menu:
                 Intent intent = new Intent(this, QuizActivity.class);
                 startActivity(intent);
+            case R.id.logout_menu:
+                AuthUI.getInstance()
+                        .signOut(this)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Log.d("Logout", "User logged out");
+                                FirebaseUtil.attachListener();
+                            }
+                        });
+                FirebaseUtil.detachListener();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
