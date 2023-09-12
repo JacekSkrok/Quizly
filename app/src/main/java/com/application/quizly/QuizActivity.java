@@ -29,9 +29,6 @@ public class QuizActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert_quiz);
-
-        FirebaseUtil.openFbReference("quizgames", this);
-
         aFirebaseDatabase = FirebaseUtil.aFirebaseDatabase;
         aDatabaseReference = FirebaseUtil.aDatabaseReference;
 
@@ -70,7 +67,20 @@ public class QuizActivity extends AppCompatActivity {
         }
 
     }
-
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.save_menu, menu);
+        if (FirebaseUtil.isAdmin == true) {
+            menu.findItem(R.id.delete_menu).setVisible(true);
+            menu.findItem(R.id.save_menu).setVisible(true);
+            enableEditTexts(true);
+        } else {
+            menu.findItem(R.id.delete_menu).setVisible(false);
+            menu.findItem(R.id.save_menu).setVisible(false);
+            enableEditTexts(false);
+        }
+        return true;
+    }
     private void saveQuiz() {
         quiz.setTitle(txtTitle.getText().toString());
         quiz.setCategory(txtCategory.getText().toString());
@@ -82,7 +92,6 @@ public class QuizActivity extends AppCompatActivity {
             aDatabaseReference.child(quiz.getId()).setValue(quiz);
         }
     }
-
     private void deleteQuiz() {
         if (quiz == null) {
             Toast.makeText(this, "Please save the quiz first", Toast.LENGTH_SHORT).show();
@@ -94,17 +103,16 @@ public class QuizActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ListQuizActivity.class);
         startActivity(intent);
     }
-
     private void clean() {
         txtTitle.setText("");
         txtDescription.setText("");
         txtCategory.setText("");
         txtTitle.requestFocus();
     }
+    private void enableEditTexts(boolean isEnabled) {
+        txtTitle.setEnabled(isEnabled);
+        txtCategory.setEnabled(isEnabled);
+        txtDescription.setEnabled(isEnabled);
 
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.save_menu, menu);
-        return true;
     }
 }

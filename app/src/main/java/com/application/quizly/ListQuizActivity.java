@@ -30,6 +30,13 @@ public class ListQuizActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.list_activity_menu, menu);
+        MenuItem menuItem = menu.findItem(R.id.insert_menu);
+        if (FirebaseUtil.isAdmin) {
+            menuItem.setVisible(true);
+        }
+        else {
+            menuItem.setVisible(false);
+        }
         return true;
     }
 
@@ -71,5 +78,9 @@ public class ListQuizActivity extends AppCompatActivity {
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvQuizzes.setLayoutManager(quizzesLayoutManager);
         FirebaseUtil.attachListener();
+    }
+
+    public void showMenu() {
+        invalidateOptionsMenu();
     }
 }
