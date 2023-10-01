@@ -1,24 +1,38 @@
 package com.application.quizly;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 public class QuizActivity extends AppCompatActivity {
 
     private FirebaseDatabase aFirebaseDatabase;
     private DatabaseReference aDatabaseReference;
 
+    private static final int PICTURE_RESULT = 42;
     EditText txtTitle;
     EditText txtCategory;
     EditText txtDescription;
@@ -45,6 +59,16 @@ public class QuizActivity extends AppCompatActivity {
         txtTitle.setText(quiz.getTitle());
         txtCategory.setText(quiz.getCategory());
         txtDescription.setText(quiz.getDescription());
+        Button btnImage = findViewById(R.id.btnImage);
+        btnImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/jpeg");
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                startActivityForResult(intent.createChooser(intent, "Insert Picture"), PICTURE_RESULT);
+            }
+        });
 
     }
 
@@ -81,6 +105,29 @@ public class QuizActivity extends AppCompatActivity {
         }
         return true;
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICTURE_RESULT && resultCode == RESULT_OK) {
+            Uri imageUri = data.getData();
+            final StorageReference ref = FirebaseUtil.aStorageReference.child(imageUri.getLastPathSegment());
+            ref.putFile(imageUri).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    String url = ref.getDownloadUrl().toString();
+                    //String url = taskSnapshot.getDownloadUrl().toString();
+                    String pictureName = taskSnapshot.getStorage().getPath();
+                    quiz.setImageUrl(url);
+                    quiz.setImageName(pictureName);
+                    Log.d("Url: ", url);
+                    Log.d("Name", pictureName);
+                }
+            });
+
+        }
+    }
     private void saveQuiz() {
         quiz.setTitle(txtTitle.getText().toString());
         quiz.setCategory(txtCategory.getText().toString());
@@ -115,4 +162,5 @@ public class QuizActivity extends AppCompatActivity {
         txtDescription.setEnabled(isEnabled);
 
     }
+
 }

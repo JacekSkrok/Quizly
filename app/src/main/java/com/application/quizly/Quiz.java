@@ -58,4 +58,6 @@ public class Quiz implements Serializable {
         this.imageUrl = imageUrl;
     }
 
+    public void setImageName(String pictureName) {
+    }
 }

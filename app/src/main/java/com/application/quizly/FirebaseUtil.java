@@ -14,6 +14,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +26,8 @@ public class FirebaseUtil {
     public static DatabaseReference aDatabaseReference;
     private static FirebaseUtil firebaseUtil;
     public static FirebaseAuth aFirebaseAuth;
+    public static FirebaseStorage aFirebaseStorage;
+    public static StorageReference aStorageReference;
     public static FirebaseAuth.AuthStateListener aAuthListener;
     public static ArrayList<Quiz> aQuizes;
 
@@ -56,6 +60,7 @@ public class FirebaseUtil {
         }
         aQuizes = new ArrayList<Quiz>();
         aDatabaseReference = aFirebaseDatabase.getReference().child(ref);
+        connectStorage();
     }
 
     private static void checkAdmin(String uId) {
@@ -111,6 +116,11 @@ public class FirebaseUtil {
 
     public static void detachListener() {
         aFirebaseAuth.removeAuthStateListener(aAuthListener);
+    }
+
+    public static void connectStorage() {
+        aFirebaseStorage = FirebaseStorage.getInstance();
+        aStorageReference = aFirebaseStorage.getReference().child("quiz_icons");
     }
 
 }
