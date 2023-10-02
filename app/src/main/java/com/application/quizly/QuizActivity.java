@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 
@@ -26,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 public class QuizActivity extends AppCompatActivity {
 
@@ -36,7 +38,7 @@ public class QuizActivity extends AppCompatActivity {
     EditText txtTitle;
     EditText txtCategory;
     EditText txtDescription;
-
+    ImageView imageView;
     Quiz quiz;
 
     @Override
@@ -49,6 +51,7 @@ public class QuizActivity extends AppCompatActivity {
         txtTitle = findViewById(R.id.txtTitle);
         txtCategory = findViewById(R.id.txtCategory);
         txtDescription = findViewById(R.id.txtDescription);
+        imageView = findViewById(R.id.image);
 
         Intent intent = getIntent();
         Quiz quiz = (Quiz) intent.getSerializableExtra("Quiz");
@@ -59,6 +62,7 @@ public class QuizActivity extends AppCompatActivity {
         txtTitle.setText(quiz.getTitle());
         txtCategory.setText(quiz.getCategory());
         txtDescription.setText(quiz.getDescription());
+        showImage(quiz.getImageUrl());
         Button btnImage = findViewById(R.id.btnImage);
         btnImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +127,7 @@ public class QuizActivity extends AppCompatActivity {
                     quiz.setImageName(pictureName);
                     Log.d("Url: ", url);
                     Log.d("Name", pictureName);
+                    showImage(url);
                 }
             });
 
@@ -161,6 +166,17 @@ public class QuizActivity extends AppCompatActivity {
         txtCategory.setEnabled(isEnabled);
         txtDescription.setEnabled(isEnabled);
 
+    }
+
+    private void showImage(String url) {
+        if (url != null && url.isEmpty() == false) {
+            int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+            Picasso.get()
+                    .load(url)
+                    .resize(width, width*2/3)
+                    .centerCrop()
+                    .into(imageView);
+        }
     }
 
 }
